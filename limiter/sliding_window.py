@@ -6,12 +6,12 @@ r = redis.Redis("localhost", port=6379, decode_responses=True)
 def is_allowed(key:str, limit:int, window_seconds:int) -> dict:
   # Key : the identifier(IP)
   now = time.time()
-  window_start = now - window_seconds
+  window_start = now - window_seconds - 0.001
 
   pipe = r.pipeline()               # Mutiple redis commands to be executed as one
 
   # Deleting all requests outside the current range
-  pipe.zremrangebyscore(key, 0, window_start)
+  pipe.zremrangebyscore(key, "-inf", window_start)
 
   # Count of number of requests from the key
   pipe.zcard(key)
