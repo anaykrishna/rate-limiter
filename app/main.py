@@ -72,6 +72,7 @@ async def rate_limit_middleware(request : Request, call_next):
 
 @app.get("/ping")
 async def ping():
+  # This route is not protected  
     return {"message": "pong"}
 
 @app.get("/data")
